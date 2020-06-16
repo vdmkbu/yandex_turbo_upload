@@ -2,6 +2,7 @@
 
 namespace App\Action;
 
+use App\JsonResponse;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
@@ -11,11 +12,10 @@ class HomeAction
         ServerRequestInterface $request,
         ResponseInterface $response
     ): ResponseInterface {
-        $response->getBody()->write(json_encode([
+
+        return new JsonResponse([
             'name' => 'API',
             'version' => '1.0'
-        ]));
-
-        return $response->withHeader('Content-Type', 'application/json');
+        ]);
     }
 }

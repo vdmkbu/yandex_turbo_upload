@@ -1,7 +1,2 @@
 <?php
-header('Content-Type: application/json');
-
-echo json_encode([
-    'name' => 'turbo api upload',
-    'version' => '1.0'
-]);
+(require __DIR__ . '/../config/bootstrap.php')->run();

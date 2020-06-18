@@ -2,7 +2,7 @@
 
 namespace App\Action;
 
-use App\JsonResponse;
+use App\Http\JsonResponse;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 

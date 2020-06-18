@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Action;
+namespace App\Http\Action;
 
 use App\Http\JsonResponse;
 use Psr\Http\Message\ResponseInterface;

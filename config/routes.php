@@ -5,5 +5,5 @@ use Psr\Http\Message\ServerRequestInterface;
 use Slim\App;
 
 return function (App $app) {
-    $app->get('/', \App\Action\HomeAction::class);
+    $app->get('/', \App\Http\Action\HomeAction::class);
 };

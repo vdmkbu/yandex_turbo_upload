@@ -15,8 +15,15 @@ services:
         build:
             context: ./docker
             dockerfile: php-fpm.docker
+        environment:
+            DB_HOST: mysql
+            DB_USER: root
+            DB_PASSWORD: 123
+            DB_NAME: turbo_upload
         volumes:
             - ./:/var/www
+        depends_on:
+          - mysql
 
     php-cli:
         build:
@@ -26,3 +33,14 @@ services:
             - ./:/var/www
         working_dir: /var/www
         tty: true
+
+    mysql:
+        image: mysql:5.7
+        volumes:
+          - ./var/docker/mysql:/var/lib/mysql
+        environment:
+          DB_USER: root
+          DB_PASSWORD: 123
+          DB_NAME: turbo_upload
+        ports:
+          - "33061:3306"

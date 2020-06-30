@@ -4,6 +4,11 @@ use Psr\Container\ContainerInterface;
 use Slim\App;
 use Slim\Factory\AppFactory;
 use Slim\Middleware\ErrorMiddleware;
+use App\Service\API\TurboApi;
+use App\Entity\Site\Repository\SiteRepositoryInterface;
+use App\Entity\Site\Repository\SiteRepository;
+use App\Entity\Counter\Repository\CounterRepositoryInterface;
+use App\Entity\Counter\Repository\CounterRepository;
 
 return [
     'settings' => function () {
@@ -27,6 +32,29 @@ return [
             (bool)$settings['log_errors'],
             (bool)$settings['log_error_details']
         );
+    },
+    TurboApi::class => function(ContainerInterface $container) {
+        return new TurboApi('lentachel.ru','key', TurboApi::MODE_DEBUG);
+    },
+    SiteRepositoryInterface::class => function(ContainerInterface $container) {
+        $pdo = $container->get(PDO::class);
+        return new SiteRepository($pdo);
+    },
+    CounterRepositoryInterface::class => function(ContainerInterface $container) {
+        return new CounterRepository();
+    },
+    PDO::class => function (ContainerInterface $container) {
+        $settings = $container->get('settings')['db'];
+
+        $host = $settings['host'];
+        $dbname = $settings['database'];
+        $username = $settings['username'];
+        $password = $settings['password'];
+        $charset = $settings['charset'];
+        $flags = $settings['flags'];
+        $dsn = "mysql:host=$host;dbname=$dbname;charset=$charset";
+
+        return new PDO($dsn, $username, $password, $flags);
     },
 
 ];

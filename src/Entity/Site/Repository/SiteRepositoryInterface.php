@@ -5,8 +5,8 @@ namespace App\Entity\Site\Repository;
 
 interface SiteRepositoryInterface
 {
-    public function getTitle(): string;
-    public function getLink(): string;
-    public function getDescription(): string;
-    public function getLanguage(): string;
+    public function getTitle(int $id): string;
+    public function getLink(int $id): string;
+    public function getDescription(int $id): string;
+    public function getLanguage(int $id): string;
 }

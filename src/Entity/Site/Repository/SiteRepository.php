@@ -17,24 +17,36 @@ class SiteRepository implements SiteRepositoryInterface
         $this->connection = $connection;
     }
 
-    public function getTitle(): string
+    public function getTitle(int $id): string
     {
-        return "site_title";
+        $stmt = $this->connection->prepare('SELECT `Catalogue_Name` FROM Catalogue WHERE Catalogue_ID = ?');
+        $stmt->execute([$id]);
+
+        return $stmt->fetchColumn();
     }
 
-    public function getLink(): string
+    public function getLink(int $id): string
     {
-        return "site_link";
+        $stmt = $this->connection->prepare('SELECT `Domain` FROM Catalogue WHERE Catalogue_ID = ?');
+        $stmt->execute([$id]);
+
+        return $stmt->fetchColumn();
     }
 
-    public function getDescription(): string
+    public function getDescription(int $id): string
     {
-       return "site_description";
+        $stmt = $this->connection->prepare('SELECT `Description` FROM Catalogue WHERE Catalogue_ID = ?');
+        $stmt->execute([$id]);
+
+        return $stmt->fetchColumn();
     }
 
-    public function getLanguage(): string
+    public function getLanguage(int $id): string
     {
-        return "site_language";
+        $stmt = $this->connection->prepare('SELECT `Language` FROM Catalogue WHERE Catalogue_ID = ?');
+        $stmt->execute([$id]);
+
+        return $stmt->fetchColumn();
     }
 
 }

@@ -38,6 +38,7 @@ services:
         image: mysql:5.7
         volumes:
           - ./var/docker/mysql:/var/lib/mysql
+          - ./var/dump.sql:/docker-entrypoint-initdb.d/dump.sql
         environment:
           DB_USER: root
           DB_PASSWORD: 123

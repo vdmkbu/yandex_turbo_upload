@@ -4,6 +4,7 @@ use Psr\Container\ContainerInterface;
 use Slim\App;
 use Slim\Factory\AppFactory;
 use Slim\Middleware\ErrorMiddleware;
+use Twig\Environment;
 use App\Service\API\TurboApi;
 use App\Entity\Site\Repository\SiteRepositoryInterface;
 use App\Entity\Site\Repository\SiteRepository;
@@ -40,7 +41,8 @@ return [
     },
     NewsRepositoryInterface::class => function(ContainerInterface $container) {
         $pdo = $container->get(PDO::class);
-        return new NewsRepository($pdo);
+        $twig = $container->get(Environment::class);
+        return new NewsRepository($pdo, $twig);
     },
     SiteRepositoryInterface::class => function(ContainerInterface $container) {
         $pdo = $container->get(PDO::class);
@@ -62,5 +64,17 @@ return [
 
         return new PDO($dsn, $username, $password, $flags);
     },
+    Environment::class => function (ContainerInterface $container) {
+        $config = $container->get('settings')['twig'];
 
+        $loader = new \Twig\Loader\FilesystemLoader();
+
+        foreach ($config['template_dirs'] as $alias => $dir) {
+            $loader->addPath($dir, $alias);
+        }
+
+        $environment = new Environment($loader, []);
+
+        return $environment;
+    }
 ];

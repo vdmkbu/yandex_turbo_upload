@@ -43,4 +43,10 @@ $settings['db'] = [
     ],
 ];
 
+$settings['twig'] = [
+  'template_dirs' => [
+      \Twig\Loader\FilesystemLoader::MAIN_NAMESPACE => __DIR__ . '/../templates'
+  ]
+];
+
 return $settings;

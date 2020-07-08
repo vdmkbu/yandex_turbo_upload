@@ -5,6 +5,7 @@ namespace App\Entity\News\Repository;
 
 use App\Entity\Site\Repository\SiteRepository;
 use PDO;
+use Twig\Environment;
 
 class NewsRepository implements NewsRepositoryInterface
 {
@@ -16,10 +17,12 @@ class NewsRepository implements NewsRepositoryInterface
 
     private $connection;
     private $data;
+    private $twig;
 
-    public function __construct(PDO $connection)
+    public function __construct(PDO $connection, Environment $twig)
     {
         $this->connection = $connection;
+        $this->twig = $twig;
     }
 
     public function find(int $id)
@@ -102,7 +105,10 @@ class NewsRepository implements NewsRepositoryInterface
         $instagram = $this->getInstagram();
         $multiphoto = $this->getMultiphoto();
 
-        return preg_replace('/\s+/s',' ', "<p><strong>{$announce}</strong></p>" . $text . $instagram . $multiphoto);
+        return preg_replace('/\s+/s',' ', $this->twig->render('announce.html.twig', ['announce'=>$announce], 'text/html') .
+                                          $text .
+                                          $instagram .
+                                          $multiphoto);
 
     }
 
@@ -115,15 +121,13 @@ class NewsRepository implements NewsRepositoryInterface
 
         $image_url = $image['url'];
 
-        return "<header>
-                    <figure>
-                        <img src='{$image_url}' />
-                        <figcaption>{$sign}</figcaption>
-                    </figure>
-                    <h1>{$title}</h1>
-                </header>
-                {$text}
-                <div data-block='share'></div>";
+        return $this->twig->render('body.html.twig', [
+            'image' => $image_url,
+            'sign' => $sign,
+            'title' => $title,
+            'text' => $text
+        ], 'text/html');
+
 
     }
 
@@ -209,17 +213,13 @@ class NewsRepository implements NewsRepositoryInterface
         $result = '';
 
         if ($photos = $this->data[0]->photos) {
-
-            $result = "<div data-block='gallery'>";
-            foreach(explode(',',$photos) as $photo) {
-
-                $result .= "<img src='".$photo."'>";
-
-            }
-            $result .= "</div>";
+            return $this->twig->render('gallery.html.twig', [
+                'photos' => explode(',',$photos),
+            ], 'text/html');
         }
 
         return $result;
+
     }
 
 

@@ -1,0 +1,11 @@
+<header>
+    <figure>
+        <img src='{{ image }}' />
+        <figcaption>{{ sign }}</figcaption>
+    </figure>
+    <h1>{{ title }}</h1>
+</header>
+{% autoescape %}
+{{ text|raw }}
+{% endautoescape %}
+<div data-block='share'></div>

@@ -9,6 +9,8 @@ use App\Entity\Site\Repository\SiteRepositoryInterface;
 use App\Entity\Site\Repository\SiteRepository;
 use App\Entity\Counter\Repository\CounterRepositoryInterface;
 use App\Entity\Counter\Repository\CounterRepository;
+use App\Entity\News\Repository\NewsRepositoryInterface;
+use App\Entity\News\Repository\NewsRepository;
 
 return [
     'settings' => function () {
@@ -35,6 +37,10 @@ return [
     },
     TurboApi::class => function(ContainerInterface $container) {
         return new TurboApi('lentachel.ru','key', TurboApi::MODE_DEBUG);
+    },
+    NewsRepositoryInterface::class => function(ContainerInterface $container) {
+        $pdo = $container->get(PDO::class);
+        return new NewsRepository($pdo);
     },
     SiteRepositoryInterface::class => function(ContainerInterface $container) {
         $pdo = $container->get(PDO::class);

@@ -6,6 +6,7 @@ use App\Http\Middleware;
 
 return function (App $app) {
     $app->add(Middleware\HeaderAuth::class);
+    $app->add(Middleware\ValidationExceptionHandler::class);
 
     // Parse json, form data and xml
     $app->addBodyParsingMiddleware();

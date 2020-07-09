@@ -23,6 +23,10 @@ class UploadAction implements RequestHandlerInterface
     {
         $data = $request->getParsedBody();
 
+        if(empty($data['messages'])) {
+            throw new \DomainException('Empty messages', 422);
+        }
+
         $feed = $this->service->upload($data);
 
         echo $feed;

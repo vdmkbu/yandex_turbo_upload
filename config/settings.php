@@ -49,4 +49,9 @@ $settings['twig'] = [
   ]
 ];
 
+$settings['turbo'] = [
+   'host' => getenv('TURBO_API_HOST'),
+   'token' => getenv('TURBO_API_TOKEN'),
+   'mode' => getenv('TURBO_API_MODE')
+];
 return $settings;

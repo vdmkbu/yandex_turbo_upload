@@ -37,7 +37,11 @@ return [
         );
     },
     TurboApi::class => function(ContainerInterface $container) {
-        return new TurboApi('lentachel.ru','key', TurboApi::MODE_DEBUG);
+        $settings = $container->get('settings')['turbo'];
+
+        return new TurboApi($settings['host'],
+                            $settings['token'],
+                            $settings['mode'] == 'prod' ? TurboApi::MODE_PRODUCTION : TurboApi::MODE_DEBUG);
     },
     NewsRepositoryInterface::class => function(ContainerInterface $container) {
         $pdo = $container->get(PDO::class);

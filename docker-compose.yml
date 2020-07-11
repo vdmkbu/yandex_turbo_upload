@@ -16,10 +16,13 @@ services:
             context: ./docker
             dockerfile: php-fpm.docker
         environment:
-            DB_HOST: mysql
-            DB_USER: root
-            DB_PASSWORD: 123
-            DB_NAME: turbo_upload
+            DB_HOST: ${DB_HOST}
+            DB_USER: ${DB_USER}
+            DB_PASSWORD: ${DB_PASSWORD}
+            DB_NAME: ${DB_NAME}
+            TURBO_API_HOST: ${TURBO_API_HOST}
+            TURBO_API_TOKEN: ${TURBO_API_TOKEN}
+            TURBO_API_MODE: ${TURBO_API_MODE}
         volumes:
             - ./:/var/www
         depends_on:
@@ -40,8 +43,8 @@ services:
           - ./var/docker/mysql:/var/lib/mysql
           - ./var/dump.sql:/docker-entrypoint-initdb.d/dump.sql
         environment:
-          DB_USER: root
-          DB_PASSWORD: 123
-          DB_NAME: turbo_upload
+           DB_USER: ${DB_USER}
+           DB_PASSWORD: ${DB_PASSWORD}
+           DB_NAME: ${DB_NAME}
         ports:
           - "33061:3306"

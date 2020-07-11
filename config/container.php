@@ -6,12 +6,14 @@ use Slim\Factory\AppFactory;
 use Slim\Middleware\ErrorMiddleware;
 use Twig\Environment;
 use App\Service\API\TurboApi;
+use App\Service\RelatedNewsService;
 use App\Entity\Site\Repository\SiteRepositoryInterface;
 use App\Entity\Site\Repository\SiteRepository;
 use App\Entity\Counter\Repository\CounterRepositoryInterface;
 use App\Entity\Counter\Repository\CounterRepository;
 use App\Entity\News\Repository\NewsRepositoryInterface;
 use App\Entity\News\Repository\NewsRepository;
+use GuzzleHttp\Client;
 
 return [
     'settings' => function () {
@@ -54,6 +56,19 @@ return [
     },
     CounterRepositoryInterface::class => function(ContainerInterface $container) {
         return new CounterRepository();
+    },
+    RelatedNewsService::class => function(ContainerInterface $container) {
+        $newsRepository = $container->get(NewsRepositoryInterface::class);
+        $client = $container->get(Client::class);
+        return new RelatedNewsService($newsRepository, $client);
+    },
+    Client::class => function() {
+        $client = new Client([
+            'base_uri' => 'https://lentachel.ru',
+            'timeout'  => 2.0,
+        ]);
+
+        return $client;
     },
     PDO::class => function (ContainerInterface $container) {
         $settings = $container->get('settings')['db'];

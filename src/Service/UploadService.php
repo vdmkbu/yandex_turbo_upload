@@ -6,7 +6,6 @@ namespace App\Service;
 use App\Entity\Counter\Repository\CounterRepositoryInterface;
 use App\Entity\News\Repository\NewsRepositoryInterface;
 use App\Entity\Site\Repository\SiteRepositoryInterface;
-use App\Http\JsonResponse;
 use App\Service\API\TurboApi;
 use App\Service\TurboPageGenerator\Item;
 use sokolnikov911\YandexTurboPages\Channel;
@@ -21,16 +20,19 @@ class UploadService
     private $siteRepository;
     private $counterRepository;
     private $newsRepository;
+    private $relatedNewsService;
 
     public function __construct(TurboApi $api,
                                 SiteRepositoryInterface $siteRepository,
                                 CounterRepositoryInterface $counterRepository,
-                                NewsRepositoryInterface $newsRepository)
+                                NewsRepositoryInterface $newsRepository,
+                                RelatedNewsService $relatedNewsService)
     {
         $this->api = $api;
         $this->siteRepository = $siteRepository;
         $this->counterRepository = $counterRepository;
         $this->newsRepository = $newsRepository;
+        $this->relatedNewsService = $relatedNewsService;
     }
 
     public function upload(array $data)
@@ -71,17 +73,7 @@ class UploadService
         // для каждого элемента в результирующем массиве создадим RelatedItem
         $relatedItemsList = new RelatedItemsList(true);
 
-        $related_storage[] = [
-            'name' => 'related_item_name_1',
-            'link' => 'related_item_link_1',
-            'image' => ['url' => 'related_item_image_1']
-        ];
-
-        $related_storage[] = [
-            'name' => 'related_item_name_2',
-            'link' => 'related_item_link_2',
-            'image' => ['url' => 'related_item_image_2']
-        ];
+        $related_storage = $this->relatedNewsService->getTop();
 
         foreach($related_storage as $related_item) {
 

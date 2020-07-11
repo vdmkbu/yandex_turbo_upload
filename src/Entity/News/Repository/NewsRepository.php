@@ -57,7 +57,7 @@ class NewsRepository implements NewsRepositoryInterface
 
     public function getName(): string
     {
-        return $this->data[0]->Name;
+        return $this->data[0]->Name ?? '';
     }
 
     public function getLink(): string

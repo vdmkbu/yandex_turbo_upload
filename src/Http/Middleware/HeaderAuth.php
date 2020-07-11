@@ -17,7 +17,7 @@ class HeaderAuth implements MiddlewareInterface
 
         if ($token != 'test-value') {
            return new JsonResponse([
-             'error' => 'Invalid auth token'
+             'error_message' => 'Invalid auth token'
            ], 401);
         }
 

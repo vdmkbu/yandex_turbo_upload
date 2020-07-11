@@ -19,7 +19,7 @@ class ValidationExceptionHandler implements MiddlewareInterface
 
         } catch (\Exception $e) {
             return new JsonResponse([
-                'error' => $e->getMessage(),
+                'error_message' => $e->getMessage(),
             ], 422);
         }
     }

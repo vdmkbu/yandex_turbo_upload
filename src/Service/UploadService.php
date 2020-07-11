@@ -6,6 +6,7 @@ namespace App\Service;
 use App\Entity\Counter\Repository\CounterRepositoryInterface;
 use App\Entity\News\Repository\NewsRepositoryInterface;
 use App\Entity\Site\Repository\SiteRepositoryInterface;
+use App\Http\JsonResponse;
 use App\Service\API\TurboApi;
 use App\Service\TurboPageGenerator\Item;
 use sokolnikov911\YandexTurboPages\Channel;
@@ -35,7 +36,7 @@ class UploadService
     public function upload(array $data)
     {
         $this->api->requestUserId();
-        $this->api->setHostId('123');
+        $this->api->setHostId('https:'.getenv('TURBO_API_HOST').':443');
         $this->api->requestUploadAddress();
 
         $feed = new Feed();
@@ -130,7 +131,12 @@ class UploadService
         }
 
         $feed  = $feed->render();
-        return $feed;
+
+        $result = $this->api->uploadRss($feed);
+        return json_decode($result['response']);
+
+
+
 
     }
 }

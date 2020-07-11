@@ -27,10 +27,9 @@ class UploadAction implements RequestHandlerInterface
             throw new \DomainException('Empty messages', 422);
         }
 
-        $feed = $this->service->upload($data);
 
-        echo $feed;
+        $result = $this->service->upload($data);
 
-        return new JsonResponse($data);
+        return new JsonResponse($result);
     }
 }

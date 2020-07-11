@@ -132,8 +132,18 @@ class UploadService
 
         $feed  = $feed->render();
 
-        $result = $this->api->uploadRss($feed);
-        return json_decode($result['response']);
+        if ($data['prod'] == 1) {
+
+            $result = $this->api->uploadRss($feed);
+            return json_decode($result['response']);
+
+        }
+        else {
+            return [
+              'feed' => $feed
+            ];
+        }
+
 
 
 

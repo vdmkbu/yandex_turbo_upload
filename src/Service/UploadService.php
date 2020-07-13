@@ -16,6 +16,8 @@ use sokolnikov911\YandexTurboPages\RelatedItemsList;
 
 class UploadService
 {
+    CONST SITE_ID = 1;
+
     private $api;
     private $siteRepository;
     private $counterRepository;
@@ -44,10 +46,10 @@ class UploadService
         $feed = new Feed();
         $channel = new Channel();
 
-        $channel_title = $this->siteRepository->getTitle(1);
-        $channel_link = $this->siteRepository->getLink(1);
-        $channel_description = $this->siteRepository->getDescription(1);
-        $channel_language = $this->siteRepository->getLanguage(1);
+        $channel_title = $this->siteRepository->getTitle(self::SITE_ID);
+        $channel_link = $this->siteRepository->getLink(self::SITE_ID);
+        $channel_description = $this->siteRepository->getDescription(self::SITE_ID);
+        $channel_language = $this->siteRepository->getLanguage(self::SITE_ID);
 
         $yandex_id = $this->counterRepository->getYandexCounterId();
         $google_id = $this->counterRepository->getGoogleCounterId();
@@ -158,10 +160,10 @@ class UploadService
         $feed = new Feed();
         $channel = new Channel();
 
-        $channel_title = $this->siteRepository->getTitle(1);
-        $channel_link = $this->siteRepository->getLink(1);
-        $channel_description = $this->siteRepository->getDescription(1);
-        $channel_language = $this->siteRepository->getLanguage(1);
+        $channel_title = $this->siteRepository->getTitle(self::SITE_ID);
+        $channel_link = $this->siteRepository->getLink(self::SITE_ID);
+        $channel_description = $this->siteRepository->getDescription(self::SITE_ID);
+        $channel_language = $this->siteRepository->getLanguage(self::SITE_ID);
 
         $channel
             ->title($channel_title)

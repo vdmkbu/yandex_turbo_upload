@@ -88,6 +88,13 @@ class UploadService
 
             // для каждого ID новости получим данные
             $this->newsRepository->find($message);
+
+            // если новость была добавлена меньше, чем 6 часов, то при обновлении не передаем в API
+            // проверяем только если не передан параметр batch (для добавления старых новостей, игноруруем проверку поля Webmaster)
+            if($data['prod'] && !$data['batch'] && !$this->newsRepository->isReadyForUpload()) {
+                continue;
+            }
+
             $name = $this->newsRepository->getName();
             $link = $this->newsRepository->getLink();
             $amp_link = $this->newsRepository->getAmpLink();

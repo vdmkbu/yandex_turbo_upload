@@ -158,7 +158,17 @@ class UploadService
         $feed = new Feed();
         $channel = new Channel();
 
-        $channel->appendTo($feed);
+        $channel_title = $this->siteRepository->getTitle(1);
+        $channel_link = $this->siteRepository->getLink(1);
+        $channel_description = $this->siteRepository->getDescription(1);
+        $channel_language = $this->siteRepository->getLanguage(1);
+
+        $channel
+            ->title($channel_title)
+            ->link($channel_link)
+            ->description($channel_description)
+            ->language($channel_language)
+            ->appendTo($feed);
 
         foreach($data['messages'] as $message) {
 

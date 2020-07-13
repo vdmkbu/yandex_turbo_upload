@@ -41,19 +41,21 @@ class Item extends \sokolnikov911\YandexTurboPages\Item
         $xml = new SimpleXMLElement('<?xml version="1.0" encoding="UTF-8" ?><item turbo="' . $isTurboEnabled
             . '"></item>', LIBXML_NOERROR | LIBXML_ERR_NONE | LIBXML_ERR_FATAL);
 
-        $xml->addChild('title', $this->title);
-        $xml->addChild('link', $this->link);
-        $xml->addChild('amplink', $this->ampLink);
-        $xml->addCdataChild('turbo:content', $this->turboContent, 'http://turbo.yandex.ru');
-        $xml->addChildWithValueChecking('pubDate', date(DATE_RSS, $this->pubDate));
-        $xml->addChildWithValueChecking('category', $this->category);
-        $xml->addChildWithValueChecking('author', $this->author);
-        $xml->addChildWithValueChecking('description', $this->description);
+        $this->title ? $xml->addChild('title', $this->title) : null;
+        $this->link ? $xml->addChild('link', $this->link) : null;
+        $this->ampLink ? $xml->addChild('amplink', $this->ampLink) : null;
+        $this->turboContent ? $xml->addCdataChild('turbo:content', $this->turboContent, 'http://turbo.yandex.ru') : null;
+        $this->pubDate ? $xml->addChildWithValueChecking('pubDate', date(DATE_RSS, $this->pubDate)) : null;
+        $this->category ? $xml->addChildWithValueChecking('category', $this->category) : null;
+        $this->author ? $xml->addChildWithValueChecking('author', $this->author) : null;
+        $this->description ? $xml->addChildWithValueChecking('description', $this->description) : null;
 
-        $enclosure = $xml->addChild('enclosure');
-        $enclosure->addAttribute('url', $this->enclosure['url']);
-        $enclosure->addAttribute('length', $this->enclosure['length']);
-        $enclosure->addAttribute('type', $this->enclosure['type']);
+        if ($this->enclosure['url']) {
+            $enclosure = $xml->addChild('enclosure');
+            $enclosure->addAttribute('url', $this->enclosure['url']);
+            $enclosure->addAttribute('length', $this->enclosure['length']);
+            $enclosure->addAttribute('type', $this->enclosure['type']);
+        }
 
         $xml->addChildWithValueChecking('yandex:full-text', $this->fullText, 'http://news.yandex.ru');
         $xml->addChildWithValueChecking('turbo:topic', $this->turboTopic, 'http://turbo.yandex.ru');

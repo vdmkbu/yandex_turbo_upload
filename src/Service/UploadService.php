@@ -148,4 +148,41 @@ class UploadService
 
 
     }
+
+    public function delete(array $data)
+    {
+        $this->api->requestUserId();
+        $this->api->setHostId('https:'.getenv('TURBO_API_HOST').':443');
+        $this->api->requestUploadAddress();
+
+        $feed = new Feed();
+        $channel = new Channel();
+
+        $channel->appendTo($feed);
+
+        foreach($data['messages'] as $message) {
+
+            $this->newsRepository->find($message);
+
+            $item = new Item(false);
+            $link = $this->newsRepository->getLink();
+            $item->link($link)
+                ->appendTo($channel);
+        }
+
+        $feed  = $feed->render();
+
+        if ($data['prod'] == 1) {
+
+            $result = $this->api->uploadRss($feed);
+            return json_decode($result['response']);
+
+        }
+        else {
+            return [
+                'feed' => $feed
+            ];
+        }
+
+    }
 }

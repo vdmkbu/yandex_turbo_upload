@@ -3,6 +3,7 @@
 namespace App\Http\Action;
 
 
+use App\Http\JsonResponse;
 use App\Service\UploadService;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -24,6 +25,10 @@ class DeleteAction implements RequestHandlerInterface
         if(empty($data['messages'])) {
             throw new \DomainException('Empty messages', 422);
         }
+
+        $result = $this->service->delete($data);
+
+        return new JsonResponse($result);
     }
 
 }

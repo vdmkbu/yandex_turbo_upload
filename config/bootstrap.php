@@ -16,4 +16,7 @@ $app = $container->get(App::class);
 (require __DIR__ . '/routes.php')($app);
 (require __DIR__ . '/middleware.php')($app);
 
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/../');
+$dotenv->load();
+
 return $app;

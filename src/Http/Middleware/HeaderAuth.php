@@ -15,7 +15,7 @@ class HeaderAuth implements MiddlewareInterface
     {
         $token = $request->getHeaderLine('X-API-TOKEN');
 
-        if ($token != 'test-value') {
+        if ($token != getenv('AUTH_TOKEN')) {
            return new JsonResponse([
              'error_message' => 'Invalid auth token'
            ], 401);

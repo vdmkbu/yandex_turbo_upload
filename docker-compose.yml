@@ -39,6 +39,8 @@ services:
             - ./:/var/www
         working_dir: /var/www
         tty: true
+        environment:
+          AUTH_TOKEN: ${AUTH_TOKEN}
 
     mysql:
         image: mysql:5.7

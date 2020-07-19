@@ -16,7 +16,13 @@ $app = $container->get(App::class);
 (require __DIR__ . '/routes.php')($app);
 (require __DIR__ . '/middleware.php')($app);
 
-$dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/../');
+$repository = \Dotenv\Repository\RepositoryBuilder::createWithNoAdapters()
+    ->addAdapter(\Dotenv\Repository\Adapter\EnvConstAdapter::class)
+    ->addWriter(\Dotenv\Repository\Adapter\PutenvAdapter::class)
+    ->immutable()
+    ->make();
+
+$dotenv = \Dotenv\Dotenv::create($repository, __DIR__ . '/../');
 $dotenv->load();
 
 return $app;
